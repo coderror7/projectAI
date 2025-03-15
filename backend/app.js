@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use('/users', userRoute);
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('Hello World!');  // dummy route
 });
 
 export default app;

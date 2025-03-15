@@ -1,30 +1,28 @@
 import userModel from "../models/user.model.js";
 import * as userService from "../services/user.services.js";
 import { validationResult } from "express-validator";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
 export const createUserController = async (req, res) => {
-    const errors = validationResult(req);
+    const errors = validationResult(req);   // Check for validation errors
 
     if(!errors.isEmpty()){
-        return res.status(400).json({errors: errors.array()});
+        return res.status(400).json({errors: errors.array()});      // If there are errors, return them
     }
 
     try{
-        const user = await userService.createUser(req.body);
+        const user = await userService.createUser(req.body);        // Create user
         
-        const token = await user.generateJWT();
+        const token = await user.generateJWT();             // Generate JWT token
 
         res.status(201).send({user, token});
-    } catch (error){
-        res.status(400).send({message: error.message})
+    } catch (error){ 
+        res.status(400).send({message: error.message})          // If there is an error, return it
     }
 } 
 
 
 export const loginController = async (req, res) => {
-    const errors = validationResult(req);
+    const errors = validationResult(req);               // Check for validation errors
 
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -33,7 +31,7 @@ export const loginController = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const user = await userModel.findOne({ email }).select('+password');
+        const user = await userModel.findOne({ email }).select('+password');            // Find user by email
 
         if (!user) {
             return res.status(401).json({ errors: 'invalid credentials' });
@@ -41,13 +39,13 @@ export const loginController = async (req, res) => {
 
 
         if (!user.password) {
-            return res.status(500).json({ errors: 'User password not found in DB' });
+            return res.status(500).json({ errors: 'User password not found in DB' });       // If password is not found, return error
         }
 
         const isMatch = await user.validatePassword(password);
 
         if (!isMatch) {
-            return res.status(401).json({ errors: 'invalid credentials' });
+            return res.status(401).json({ errors: 'invalid credentials' });         // If password is incorrect, return error
         }
 
         const token = await user.generateJWT();
@@ -61,9 +59,9 @@ export const loginController = async (req, res) => {
 
 
 export const profileController = async (req, res) => {
-    console.log(req.user);
-
+    console.log(req.user);   // Log user object
+ 
     res.status(200).json({
-         user: req.user
+         user: req.user  // Return user object
  });
 }

@@ -17,18 +17,18 @@ const userSchema = new mongoose.Schema({
         required: true,
         select: false,
     }
-})
+})   // usermodel schema
 
 userSchema.statics.hashPassword = async function(password){
-    return await bcrypt.hash(password, 10);
+    return await bcrypt.hash(password, 10);        // hashing password
 }
 
 userSchema.methods.validatePassword = async function(password){
-    return await bcrypt.compare(password, this.password);
+    return await bcrypt.compare(password, this.password);   // validating password
 }
 
 userSchema.methods.generateJWT = function(){
-    return jwt.sign({email: this.email}, process.env.JWT_SECRET);
+    return jwt.sign({email: this.email}, process.env.JWT_SECRET);       // generating jwt token
 }
 
 const User = mongoose.model('user', userSchema);
