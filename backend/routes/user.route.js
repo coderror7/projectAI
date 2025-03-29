@@ -19,5 +19,8 @@ router.post('/login',           // Login route
 
 router.get('/profile', authMiddleware.authUser,userController.profileController)        // Profile route or controller
 
+router.post("/logout", authMiddleware.authUser, userController.logoutController)     // Logout route or controller
+
+
 
 export default router;

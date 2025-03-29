@@ -126,6 +126,68 @@ npm start
 - User authentication is handled using **JWT tokens**.
 - Routes are **protected** using authentication middleware.
 
+
+
+---
+
+
+# 🚀 **Adding Logout Route with Token Blacklisting**  
+
+## 📌 **Overview**  
+This guide explains how to implement **user logout functionality** by blacklisting JWT tokens in MongoDB. The blacklisted tokens expire after **24 hours**, ensuring security.  
+
+---
+
+## 📌 **Steps to Implement**  
+
+### **1️⃣ Create Token Blacklist Model**  
+- Define a **`tokenBlacklist.model.js`** file to store blacklisted tokens with a **TTL (Time-To-Live) of 24 hours**.
+
+### **2️⃣ Update Authentication Middleware**  
+- Modify `auth.middleware.js` to **check if a token is blacklisted** before granting access.
+
+### **3️⃣ Implement Logout Controller**  
+- In `user.controller.js`, create a **logout function** that:  
+  - **Adds the token to the blacklist**  
+  - **Clears the authentication cookie (if applicable)**  
+  - **Prevents further use of the token**  
+
+### **4️⃣ Define Logout Route**  
+- Add a `/logout` route in `user.route.js` that calls the logout controller and **requires authentication**.
+
+---
+
+## ✅ **How to Test?**  
+
+1️⃣ **Start the server:**  
+```bash
+npm run dev
+```
+
+2️⃣ **Login to get a token:**  
+```bash
+curl -X POST http://localhost:3000/api/login -H "Content-Type: application/json" -d '{"email": "user@example.com", "password": "123456"}'
+```
+
+3️⃣ **Logout and blacklist the token:**  
+```bash
+curl -X POST http://localhost:3000/api/logout -H "Authorization: Bearer your_jwt_token_here"
+```
+
+4️⃣ **Try accessing a protected route (should fail):**  
+```bash
+curl -X GET http://localhost:3000/api/profile -H "Authorization: Bearer your_jwt_token_here"
+```
+
+---
+
+## 🎯 **Final Notes**  
+- **Tokens automatically expire in 24 hours** (MongoDB TTL).  
+- **Ensures logged-out users cannot reuse old tokens.**  
+- **Improves security by blocking unauthorized access.**  
+
+Now your logout system is **secure & efficient!** 🚀🔒
+
 ---
 
 

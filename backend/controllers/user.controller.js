@@ -1,6 +1,7 @@
 import userModel from "../models/user.model.js";
 import * as userService from "../services/user.services.js";
 import { validationResult } from "express-validator";
+import TokenBlacklist from "../models/tokenBlacklist.model.js";
 
 export const createUserController = async (req, res) => {
     const errors = validationResult(req);   // Check for validation errors
@@ -65,3 +66,24 @@ export const profileController = async (req, res) => {
          user: req.user  // Return user object
  });
 }
+
+export const logoutController = async (req, res) => {
+    try {
+        const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+
+        if (!token) {
+            return res.status(400).json({ message: "No token provided" });
+        }
+
+        // Add token to the blacklist
+        await TokenBlacklist.create({ token });
+
+        // Clear cookie (if applicable)
+        res.clearCookie("token");
+
+        res.status(200).json({ message: "Logged out successfully, token blacklisted for 24 hours" });
+
+    } catch (error) {
+        res.status(500).json({ message: "Server error: " + error.message });
+    }
+};
