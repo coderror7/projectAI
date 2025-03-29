@@ -206,17 +206,6 @@ Vite will start the server and provide a local URL, usually:
 http://localhost:5173
 ```
 
-## 📌 Project Structure
-```
-📂 src
- ├── 📂 routes
- │   ├── AppRoutes.jsx
- ├── 📂 assets
- ├── App.jsx
- ├── main.jsx
- └── index.css
-```
-
 ## 📌 Routing Setup (React Router DOM)
 The project uses **React Router DOM** for navigation. The routes are defined in `AppRoutes.jsx`:
 
