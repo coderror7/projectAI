@@ -1,5 +1,8 @@
 import React from 'react'
 import { Route, BrowserRouter, Routes } from 'react-router-dom'
+import Login from '../screens/login'
+import Register from '../screens/register'
+import Home from '../screens/home'
 
 function appRoutes() {
   return (
@@ -7,9 +10,9 @@ function appRoutes() {
         <BrowserRouter>
 
             <Routes>
-                <Route path="/" element={<div>Home</div>} />
-                <Route path="/register" element={<div>register</div>} />
-                <Route path="/login" element={<div>login</div>} />
+                <Route path="/" element={<div><Home/></div>} />
+                <Route path="/register" element={<div><Register/></div>} />
+                <Route path="/login" element={<div><Login/></div>} />
             </Routes>
 
         </BrowserRouter>
